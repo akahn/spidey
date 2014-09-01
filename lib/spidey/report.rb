@@ -25,6 +25,26 @@ module Spidey
 <% page.links.each do |link| -%>
   * <%= link %>
 <% end -%>
+
+  Scripts:
+
+<% page.scripts.each do |script| -%>
+  * <%= script %>
+<% end -%>
+
+  Images:
+
+<% page.images.each do |image| -%>
+  * <%= image %>
+<% end -%>
+
+  Stylesheets:
+
+<% page.stylesheets.each do |stylesheet| -%>
+  * <%= stylesheet %>
+<% end -%>
+
+<% end -%>
       ERB
     end
   end

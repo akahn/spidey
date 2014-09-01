@@ -53,7 +53,8 @@ module Spidey
 
     def internal_link?(url)
       begin
-        # Match /foo but not //foo
+        # Match /foo but not //foo. Ruby's URI doesn't know about
+        # protocol-relative URLs
         url =~ Regexp.new("^/[^/]") ||
           URI(url).host == @uri.host
       rescue URI::InvalidURIError

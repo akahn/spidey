@@ -3,12 +3,13 @@
 <% @pages.each do |page| -%>
 * <%= page.uri %>
 
-<% ['Links', 'Scripts', 'Images', 'Stylesheets'].each do |section| %>
+<% ['Links', 'Scripts', 'Images', 'Stylesheets'].each do |section| -%>
 <% if page.send(section.downcase).length > 0 -%>
   <%= section -%>:
   <% page.send(section.downcase).each do |item| -%>
   * <%= item %>
   <% end -%>
+
 <% end -%>
 <% end -%>
 <% end -%>

@@ -9,43 +9,8 @@ module Spidey
     end
 
     def render
-      template = ERB.new(self.class.template, nil, '-')
+      template = ERB.new(File.read(File.expand_path('report.erb', __dir__)), nil, '-')
       template.result(binding)
-    end
-
-    def self.template
-      <<-ERB
-# Spidey Report for <%= @uri %>
-
-<% @pages.each do |page| -%>
-* <%= page.uri %>
-
-  Links:
-
-<% page.links.each do |link| -%>
-  * <%= link %>
-<% end -%>
-
-  Scripts:
-
-<% page.scripts.each do |script| -%>
-  * <%= script %>
-<% end -%>
-
-  Images:
-
-<% page.images.each do |image| -%>
-  * <%= image %>
-<% end -%>
-
-  Stylesheets:
-
-<% page.stylesheets.each do |stylesheet| -%>
-  * <%= stylesheet %>
-<% end -%>
-
-<% end -%>
-      ERB
     end
   end
 end

@@ -3,28 +3,12 @@
 <% @pages.each do |page| -%>
 * <%= page.uri %>
 
-  Links:
-
-<% page.links.each do |link| -%>
-  * <%= link %>
+<% ['Links', 'Scripts', 'Images', 'Stylesheets'].each do |section| %>
+<% if page.send(section.downcase).length > 0 -%>
+  <%= section -%>:
+  <% page.send(section.downcase).each do |item| -%>
+  * <%= item %>
+  <% end -%>
 <% end -%>
-
-  Scripts:
-
-<% page.scripts.each do |script| -%>
-  * <%= script %>
 <% end -%>
-
-  Images:
-
-<% page.images.each do |image| -%>
-  * <%= image %>
-<% end -%>
-
-  Stylesheets:
-
-<% page.stylesheets.each do |stylesheet| -%>
-  * <%= stylesheet %>
-<% end -%>
-
 <% end -%>

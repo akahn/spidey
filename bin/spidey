@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << 'lib'
+
+require 'spidey'
+require 'optparse'
+
+options = {:max_depth => 3}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: scraper --uri http://example.com --max_depth"
+
+  opts.on("-u", "--uri URI", "Location of the website to scrape") do |uri|
+    options[:uri] = uri
+  end
+
+  opts.on('-d', '--max-depth MAX', "Maximum depth to descend into site tree") do |max_depth|
+    options[:max_depth] = Integer(max_depth)
+  end
+end.parse!
+
+abort "Must specify --uri" unless options[:uri]
+
+Spidey.scrape(options[:uri], options[:max_depth])

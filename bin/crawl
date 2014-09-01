@@ -1,0 +1,29 @@
+require 'nokogiri'
+require 'faraday'
+
+url = ARGV.last
+
+puts url
+def links(body)
+  links = Nokogiri::HTML(body).xpath('//a').map {|node| node['href']}.compact.uniq
+  @subpages = links.select do |link|
+    URI(link).relative?
+  end
+end
+
+def fetch(url)
+  puts "Getting #{url}"
+  Faraday.get(url)
+end
+
+report = {}
+page = fetch(url)
+
+report[url] = links(page.body)
+
+
+report[url].each do |link|
+  report[link] = links(fetch("https://www.digitalocean.com/" + link).body)
+end
+
+binding.pry

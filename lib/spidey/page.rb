@@ -24,28 +24,31 @@ module Spidey
     # Find internal (linking to the same domain) hyperlinks on the page,
     # excluding links to files
     def links
-      links = html_document.xpath('//a/@href').map(&:value).uniq
+      links = extract_attribute_values('//a/@href').uniq
       links.select do |link|
         !file_link?(link) && internal_link?(link)
       end
     end
 
     def stylesheets
-      select_internal(html_document.xpath("//link[@rel='stylesheet']/@href").map &:value)
+      select_internal(extract_attribute_values("//link[@rel='stylesheet']/@href"))
     end
 
     def images
-      select_internal(html_document.xpath("//img/@src").map &:value)
+      select_internal(extract_attribute_values("//img/@src"))
     end
 
     def scripts
-      select_internal(html_document.xpath("//script/@src").map &:value)
+      select_internal(extract_attribute_values("//script/@src"))
     end
 
     private
 
-    def html_document
+    # Fetch and parse the page content and return attribute values according to
+    # an XPath selector
+    def extract_attribute_values(xpath_expression)
       @document ||= Nokogiri::HTML(@connection.body(@uri))
+      @document.xpath(xpath_expression).map(&:value)
     end
 
     def internal_link?(url)

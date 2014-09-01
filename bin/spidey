@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << 'lib'
+$LOAD_PATH << File.expand_path('../lib', __dir__)
 
 require 'spidey'
 require 'optparse'

@@ -24,22 +24,22 @@ module Spidey
     # Find internal (linking to the same domain) hyperlinks on the page,
     # excluding links to files
     def links
-      links = html_document.xpath('//a').map {|node| node['href']}.compact.uniq
+      links = html_document.xpath('//a/@href').map(&:value).uniq
       links.select do |link|
         !file_link?(link) && internal_link?(link)
       end
     end
 
     def stylesheets
-      html_document.xpath("//link[@rel='stylesheet']").map {|node| node['href']}.select {|src| internal_link?(src) }
+      select_internal(html_document.xpath("//link[@rel='stylesheet']/@href").map &:value)
     end
 
     def images
-      html_document.xpath("//img[@src]").map {|node| node['src']}.select {|src| internal_link?(src) }
+      select_internal(html_document.xpath("//img/@src").map &:value)
     end
 
     def scripts
-      html_document.xpath("//script[@src]").map {|node| node['src']}.select {|src| internal_link?(src) }
+      select_internal(html_document.xpath("//script/@src").map &:value)
     end
 
     private
@@ -57,6 +57,10 @@ module Spidey
         # Twitter links are not valid URIs
         false
       end
+    end
+
+    def select_internal(paths)
+      paths.select {|path| internal_link?(path) }
     end
 
     def file_link?(url)

@@ -2,7 +2,6 @@ $LOAD_PATH << './lib'
 
 require 'spidey'
 require 'webrick'
-require 'logger'
 
 Spidey.log_requests = false
 
